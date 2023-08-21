@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -40,9 +41,12 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun C01Main() {
+    val context = LocalContext.current
     val viewModel: C01MainViewModel = viewModel<C01MainViewModel>()
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 10.dp)
     ) {
         Text(
             text ="RabbitMQ",
@@ -93,7 +97,9 @@ fun C01Main() {
                 onClick = {
                     viewModel.C_GetxConnectToSSE()
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 5.dp)
             )
 
             {
@@ -103,10 +109,12 @@ fun C01Main() {
             }
             Button(onClick = {
 
-                    viewModel.C_SETxCancle()
+                    viewModel.C_SETxCancleSSE()
 
             },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 5.dp)
             )
             {
 
@@ -115,6 +123,51 @@ fun C01Main() {
             }
         }
 
+        Text(
+            text ="Download Video",
+            fontSize = 24.sp,
+            modifier = Modifier
+                .padding(bottom = 20.dp, top = 20.dp)
+                .align(CenterHorizontally)
+        )
+
+        Text(
+            text = viewModel.tC_MessageDownload.toString(),
+            fontSize = 24.sp,
+            modifier = Modifier
+                .padding(bottom = 20.dp, top = 20.dp)
+                .align(CenterHorizontally)
+        )
+        Row {
+            Button(
+                onClick = {
+                    viewModel.C_GETxDownloadAndSaveVideo(context)
+                },
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 5.dp)
+            )
+            {
+
+                Text(text = " Download ")
+            }
+            Button(
+                onClick = {
+                    viewModel.C_GETxDownloadAndSaveVideoChunkedProgressMaxMemory(context)
+                },
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 5.dp)
+            )
+            {
+
+                Text(
+                    text = "Download Chunked",
+                    maxLines = 1
+
+                )
+            }
+        }
     }
 }
 
